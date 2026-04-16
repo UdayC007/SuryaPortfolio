@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surya Pundir — UI/UX Designer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <a href="#" class="nav-logo">Surya<span>.</span></a>
+        <div class="nav-links" id="nav-links">
+            <a href="#about">About</a>
+            <a href="#work">Work</a>
+            <a href="#skills">Skills</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <p class="hero-eyebrow reveal">UI/UX Designer — DIT University</p>
+            <h1 class="hero-title reveal">
+                Surya Pundir
+            </h1>
+            <p class="hero-sub reveal">
+                Designing thoughtful digital products with clarity,<br>
+                purpose, and a love for clean aesthetics.
+            </p>
+            <div class="hero-buttons reveal">
+                <a href="#work" class="btn-dark">View Projects</a>
+                <a href="#contact" class="btn-light">Contact Me</a>
+            </div>
+        </div>
+        <div class="hero-decoration">
+            <div class="deco-circle"></div>
+            <div class="deco-line"></div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-head reveal">
+                <span class="section-tag">About</span>
+                <h2>A little about me</h2>
+            </div>
+            <div class="about-layout">
+                <div class="about-text reveal">
+                    <p>
+                        I'm Surya Pundir, a <strong>2nd year UI/UX Design</strong> student at
+                        <strong>DIT University, Dehradun</strong>. I focus on creating clean,
+                        human-centered interfaces that solve real problems.
+                    </p>
+                    <p>
+                        I believe simplicity is the ultimate sophistication. My design philosophy
+                        centers on removing the unnecessary until only the essential remains —
+                        clear layouts, intentional typography, and purposeful interactions.
+                    </p>
+                </div>
+                <div class="about-details">
+                    <div class="detail-card reveal">
+                        <span class="detail-label">Currently</span>
+                        <span class="detail-value">DIT University, Dehradun</span>
+                        <span class="detail-sub">B.Des UI/UX Design — 2nd Year</span>
+                    </div>
+                    <div class="detail-card reveal">
+                        <span class="detail-label">Focus</span>
+                        <span class="detail-value">Product Design & User Research</span>
+                    </div>
+                    <div class="detail-card reveal">
+                        <span class="detail-label">Tools I Use</span>
+                        <div class="tool-pills">
+                            <span>Figma</span><span>Adobe XD</span><span>Photoshop</span><span>Illustrator</span><span>After Effects</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work -->
+    <section class="work" id="work">
+        <div class="container">
+            <div class="section-head reveal">
+                <span class="section-tag">Work</span>
+                <h2>Selected projects</h2>
+            </div>
+            <div class="projects-grid" id="projects-grid"></div>
+            <div class="no-projects" id="no-projects" style="display:none;">
+                <p>Projects are on the way. Stay tuned.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="skills" id="skills">
+        <div class="container">
+            <div class="section-head reveal">
+                <span class="section-tag">Skills</span>
+                <h2>What I bring to the table</h2>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-item reveal">
+                    <span class="skill-num">01</span>
+                    <h3>User Interface Design</h3>
+                    <p>Crafting visually harmonious interfaces with precise typography and color theory.</p>
+                </div>
+                <div class="skill-item reveal">
+                    <span class="skill-num">02</span>
+                    <h3>User Experience</h3>
+                    <p>Mapping user journeys, building personas, and validating designs through research.</p>
+                </div>
+                <div class="skill-item reveal">
+                    <span class="skill-num">03</span>
+                    <h3>Prototyping</h3>
+                    <p>Bringing static designs to life with interactive, high-fidelity prototypes.</p>
+                </div>
+                <div class="skill-item reveal">
+                    <span class="skill-num">04</span>
+                    <h3>Design Systems</h3>
+                    <p>Building scalable component libraries that maintain visual consistency.</p>
+                </div>
+                <div class="skill-item reveal">
+                    <span class="skill-num">05</span>
+                    <h3>Visual Identity</h3>
+                    <p>Creating cohesive brand systems — logos, typography, color palettes.</p>
+                </div>
+                <div class="skill-item reveal">
+                    <span class="skill-num">06</span>
+                    <h3>Motion Design</h3>
+                    <p>Adding purposeful micro-interactions and transitions that guide users.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-head reveal">
+                <span class="section-tag">Contact</span>
+                <h2>Let's connect</h2>
+            </div>
+            <div class="contact-body reveal">
+                <p class="contact-intro">Have a project idea or just want to talk design? Reach out.</p>
+                <div class="contact-rows">
+                    <a href="mailto:surya@example.com" class="contact-row">
+                        <span class="cr-label">Email</span>
+                        <span class="cr-value">surya@example.com</span>
+                        <span class="cr-arrow">&rarr;</span>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" class="contact-row">
+                        <span class="cr-label">LinkedIn</span>
+                        <span class="cr-value">linkedin.com/in/surya</span>
+                        <span class="cr-arrow">&rarr;</span>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" class="contact-row">
+                        <span class="cr-label">Instagram</span>
+                        <span class="cr-value">@surya.designs</span>
+                        <span class="cr-arrow">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-flex">
+            <span>&copy; 2026 Surya Pundir</span>
+            <span>Designed in Dehradun</span>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

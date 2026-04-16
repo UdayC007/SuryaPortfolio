@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Surya Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="login-screen" id="login-screen">
+        <div class="login-card">
+            <div class="login-logo">Surya<span>.</span></div>
+            <h1>Admin Portal</h1>
+            <p>Enter your password to manage your portfolio.</p>
+            <form id="login-form">
+                <div class="input-group"><input type="password" id="login-password" placeholder="Password" autocomplete="current-password" required></div>
+                <button type="submit" class="btn btn-primary btn-full"><span>Sign In</span></button>
+                <p class="login-hint">Default password: <code>surya2026</code></p>
+            </form>
+            <div class="login-error" id="login-error">Incorrect password. Try again.</div>
+        </div>
+    </div>
+    <div class="admin-dashboard" id="admin-dashboard" style="display:none;">
+        <aside class="sidebar">
+            <div class="sidebar-header"><span class="sidebar-logo">Surya<span class="dot">.</span></span><span class="sidebar-title">Admin</span></div>
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-section="projects"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Projects</a>
+                <a href="#" class="sidebar-link" data-section="settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg> Settings</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="index.html" class="sidebar-link" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg> View Site</a>
+                <button class="sidebar-link logout-btn" id="logout-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg> Logout</button>
+            </div>
+        </aside>
+        <main class="admin-main">
+            <section class="admin-section" id="section-projects">
+                <div class="admin-header"><div><h1>Projects</h1><p>Manage your portfolio projects</p></div><button class="btn btn-primary" id="add-project-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Add Project</button></div>
+                <div class="projects-list" id="projects-list"></div>
+                <div class="empty-admin" id="empty-projects" style="display:none;"><h3>No projects yet</h3><p>Click "Add Project" to create your first project.</p></div>
+            </section>
+            <section class="admin-section" id="section-settings" style="display:none;">
+                <div class="admin-header"><div><h1>Settings</h1><p>Manage your admin account</p></div></div>
+                <div class="settings-card"><h3>Change Password</h3><form id="password-form"><div class="input-group"><label>Current Password</label><input type="password" id="old-password" required></div><div class="input-group"><label>New Password</label><input type="password" id="new-password" required minlength="4"></div><div class="input-group"><label>Confirm New Password</label><input type="password" id="confirm-password" required minlength="4"></div><button type="submit" class="btn btn-primary">Update Password</button><div class="form-message" id="password-message"></div></form></div>
+                <div class="settings-card danger-zone"><h3>Danger Zone</h3><p>Reset all projects to default sample data.</p><button class="btn btn-danger" id="reset-btn">Reset All Projects</button></div>
+            </section>
+        </main>
+    </div>
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal" id="project-modal">
+            <div class="modal-header"><h2 id="modal-title">Add Project</h2><button class="modal-close" id="modal-close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+            <form id="project-form">
+                <input type="hidden" id="project-id">
+                <div class="input-group"><label>Project Title *</label><input type="text" id="project-title" required placeholder="e.g. Meditation App Design"></div>
+                <div class="input-group"><label>Description *</label><textarea id="project-description" rows="3" required placeholder="Briefly describe the project..."></textarea></div>
+                <div class="input-group"><label>Tags (comma-separated)</label><input type="text" id="project-tags" placeholder="e.g. UI Design, Mobile, Figma"></div>
+                <div class="input-group">
+                    <label>Project Thumbnail</label>
+                    <div class="upload-area" id="upload-area"><div class="upload-placeholder" id="upload-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Click or drag an image here</span><span class="upload-hint">JPG, PNG, WebP — max 2MB</span></div><img class="upload-preview" id="upload-preview" src="" alt="Preview" style="display:none;"><button type="button" class="upload-remove" id="upload-remove" style="display:none;" title="Remove"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button><input type="file" id="project-image-file" accept="image/jpeg,image/png,image/webp" hidden></div>
+                    <input type="hidden" id="project-image" value="">
+                    <span class="input-hint">Or paste a URL below</span>
+                    <input type="url" id="project-image-url" placeholder="https://example.com/image.jpg" style="margin-top:8px;">
+                </div>
+                <div class="input-group"><label>Project Link</label><input type="url" id="project-link" placeholder="https://behance.net/your-project"></div>
+                <div class="input-group"><label>Accent Color</label><div class="color-picker-row"><input type="color" id="project-color" value="#c9a96e"><span class="color-value" id="color-value">#c9a96e</span></div></div>
+                <div class="modal-actions"><button type="button" class="btn btn-outline" id="modal-cancel">Cancel</button><button type="submit" class="btn btn-primary" id="modal-submit">Save Project</button></div>
+            </form>
+        </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script src="js/data.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
