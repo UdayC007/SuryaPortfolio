@@ -6,82 +6,136 @@
     <title>Surya Pundir — UI/UX Designer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- Particle bg -->
+    <div class="particles" id="particles"></div>
+
+    <!-- System notification -->
+    <div class="sys-notif" id="sys-notif">
+        <div class="sys-notif-inner">
+            <span class="sys-icon">🔔</span>
+            <span class="sys-text">[SYSTEM] A new player has appeared.</span>
+            <button class="sys-close" id="sys-close">✕</button>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="nav" id="nav">
-        <a href="#" class="nav-logo">Surya<span>.</span></a>
+        <a href="#" class="nav-logo">[S] SURYA</a>
         <div class="nav-links" id="nav-links">
-            <a href="#about">About</a>
-            <a href="#work">Work</a>
-            <a href="#skills">Skills</a>
-            <a href="#contact">Contact</a>
+            <a href="#about">STATUS</a>
+            <a href="#projects">QUESTS</a>
+            <a href="#skills">SKILLS</a>
+            <a href="#contact">MESSAGES</a>
         </div>
-        <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 12h18M3 6h18M3 18h18"/>
-            </svg>
+        <button class="nav-burger" id="nav-burger" aria-label="Menu">
+            <span></span><span></span><span></span>
         </button>
     </nav>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-inner">
-            <p class="hero-eyebrow reveal">UI/UX Designer — DIT University</p>
-            <h1 class="hero-title reveal">
-                Surya Pundir
-            </h1>
-            <p class="hero-sub reveal">
-                Designing thoughtful digital products with clarity,<br>
-                purpose, and a love for clean aesthetics.
-            </p>
-            <div class="hero-buttons reveal">
-                <a href="#work" class="btn-dark">View Projects</a>
-                <a href="#contact" class="btn-light">Contact Me</a>
+    <!-- Hero — Arise -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="sys-window hero-window anim-up">
+                <div class="sys-bar">
+                    <span class="sys-bar-dot"></span>
+                    <span class="sys-bar-title">SYSTEM</span>
+                    <span class="sys-bar-x">—</span>
+                </div>
+                <div class="sys-body">
+                    <p class="sys-msg">A new quest is available.</p>
+                    <p class="sys-msg-sub">Player <span class="hl">SURYA PUNDIR</span> has entered the design dungeon.</p>
+                </div>
             </div>
-        </div>
-        <div class="hero-decoration">
-            <div class="deco-circle"></div>
-            <div class="deco-line"></div>
+            <h1 class="hero-name anim-up delay-1">
+                <span class="arise-text">ARISE</span>
+                <span class="hero-main-name">SURYA PUNDIR</span>
+            </h1>
+            <div class="hero-rank anim-up delay-2">
+                <span class="rank-badge">S</span>
+                <span class="rank-text">S-RANK UI/UX DESIGNER</span>
+                <span class="rank-loc">// DIT UNIVERSITY, DEHRADUN</span>
+            </div>
+            <p class="hero-desc anim-up delay-3">
+                Designing with the precision of a Shadow Monarch.<br>
+                Every interface is a dungeon conquered.
+            </p>
+            <div class="hero-actions anim-up delay-4">
+                <a href="#projects" class="btn-system">
+                    <span class="btn-glow"></span>
+                    ACCEPT QUEST
+                </a>
+                <a href="#contact" class="btn-ghost-s">SEND MESSAGE →</a>
+            </div>
         </div>
     </section>
 
-    <!-- About -->
+    <!-- Level bar -->
+    <div class="level-bar">
+        <div class="level-track">
+            <span>⚔️ DUNGEON CLEARED</span>
+            <span>🏆 RANK: S-CLASS</span>
+            <span>👤 SHADOW DESIGNER</span>
+            <span>🔮 SKILL: UI/UX MASTERY</span>
+            <span>⚡ ARISE</span>
+            <span>💀 BOSS DEFEATED</span>
+            <span>⚔️ DUNGEON CLEARED</span>
+            <span>🏆 RANK: S-CLASS</span>
+            <span>👤 SHADOW DESIGNER</span>
+            <span>🔮 SKILL: UI/UX MASTERY</span>
+            <span>⚡ ARISE</span>
+            <span>💀 BOSS DEFEATED</span>
+        </div>
+    </div>
+
+    <!-- About — Player Status -->
     <section class="about" id="about">
         <div class="container">
             <div class="section-head reveal">
-                <span class="section-tag">About</span>
-                <h2>A little about me</h2>
+                <span class="section-tag">[SYSTEM] PLAYER STATUS</span>
+                <h2>Player <span class="hl">Info</span></h2>
             </div>
-            <div class="about-layout">
+            <div class="about-grid">
                 <div class="about-text reveal">
-                    <p>
-                        I'm Surya Pundir, a <strong>2nd year UI/UX Design</strong> student at
-                        <strong>DIT University, Dehradun</strong>. I focus on creating clean,
-                        human-centered interfaces that solve real problems.
-                    </p>
-                    <p>
-                        I believe simplicity is the ultimate sophistication. My design philosophy
-                        centers on removing the unnecessary until only the essential remains —
-                        clear layouts, intentional typography, and purposeful interactions.
-                    </p>
+                    <div class="sys-window">
+                        <div class="sys-bar">
+                            <span class="sys-bar-dot"></span>
+                            <span class="sys-bar-title">PLAYER DATA</span>
+                            <span class="sys-bar-x">—</span>
+                        </div>
+                        <div class="sys-body player-stats">
+                            <div class="ps-row"><span class="ps-key">Name</span><span class="ps-val">Surya Pundir</span></div>
+                            <div class="ps-row"><span class="ps-key">Class</span><span class="ps-val hl">UI/UX Designer</span></div>
+                            <div class="ps-row"><span class="ps-key">Rank</span><span class="ps-val rank-s">S</span></div>
+                            <div class="ps-row"><span class="ps-key">Level</span><span class="ps-val">2nd Year</span></div>
+                            <div class="ps-row"><span class="ps-key">Guild</span><span class="ps-val">DIT University, Dehradun</span></div>
+                            <div class="ps-row"><span class="ps-key">Title</span><span class="ps-val hl">Shadow Designer</span></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="about-details">
-                    <div class="detail-card reveal">
-                        <span class="detail-label">Currently</span>
-                        <span class="detail-value">DIT University, Dehradun</span>
-                        <span class="detail-sub">B.Des UI/UX Design — 2nd Year</span>
+                <div class="about-cards">
+                    <div class="quest-card reveal">
+                        <div class="qc-rank"><span class="rank-badge sm">A</span></div>
+                        <div class="qc-body">
+                            <h4>Design Arsenal</h4>
+                            <p>Weapons equipped for dungeon raids.</p>
+                            <div class="skill-tags">
+                                <span class="s-tag">Figma</span>
+                                <span class="s-tag">Adobe XD</span>
+                                <span class="s-tag">Photoshop</span>
+                                <span class="s-tag">Illustrator</span>
+                                <span class="s-tag">After Effects</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="detail-card reveal">
-                        <span class="detail-label">Focus</span>
-                        <span class="detail-value">Product Design & User Research</span>
-                    </div>
-                    <div class="detail-card reveal">
-                        <span class="detail-label">Tools I Use</span>
-                        <div class="tool-pills">
-                            <span>Figma</span><span>Adobe XD</span><span>Photoshop</span><span>Illustrator</span><span>After Effects</span>
+                    <div class="quest-card reveal">
+                        <div class="qc-rank"><span class="rank-badge sm">S</span></div>
+                        <div class="qc-body">
+                            <h4>Special Ability</h4>
+                            <p>Can transform any static screen into a living, breathing interface. Passive: +50% user satisfaction.</p>
                         </div>
                     </div>
                 </div>
@@ -89,16 +143,23 @@
         </div>
     </section>
 
-    <!-- Work -->
-    <section class="work" id="work">
+    <!-- Projects — Quests -->
+    <section class="projects" id="projects">
         <div class="container">
             <div class="section-head reveal">
-                <span class="section-tag">Work</span>
-                <h2>Selected projects</h2>
+                <span class="section-tag">[SYSTEM] QUEST LOG</span>
+                <h2>Completed <span class="hl">Quests</span></h2>
             </div>
+            <p class="section-sub reveal">Dungeons cleared and rewards claimed.</p>
             <div class="projects-grid" id="projects-grid"></div>
             <div class="no-projects" id="no-projects" style="display:none;">
-                <p>Projects are on the way. Stay tuned.</p>
+                <div class="sys-window" style="max-width:400px;margin:0 auto;">
+                    <div class="sys-bar"><span class="sys-bar-dot"></span><span class="sys-bar-title">SYSTEM</span><span class="sys-bar-x">—</span></div>
+                    <div class="sys-body" style="text-align:center;padding:40px;">
+                        <p class="sys-msg">No quests completed yet.</p>
+                        <p class="sys-msg-sub">New dungeons opening soon...</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -107,39 +168,45 @@
     <section class="skills" id="skills">
         <div class="container">
             <div class="section-head reveal">
-                <span class="section-tag">Skills</span>
-                <h2>What I bring to the table</h2>
+                <span class="section-tag">[SYSTEM] SKILL TREE</span>
+                <h2>Active <span class="hl">Skills</span></h2>
             </div>
             <div class="skills-grid">
-                <div class="skill-item reveal">
-                    <span class="skill-num">01</span>
-                    <h3>User Interface Design</h3>
-                    <p>Crafting visually harmonious interfaces with precise typography and color theory.</p>
+                <div class="skill-card reveal">
+                    <div class="sk-rank">S</div>
+                    <h4>UI Design</h4>
+                    <p>Crafting pixel-perfect interfaces with surgical precision.</p>
+                    <div class="sk-bar"><div class="sk-fill" style="--w:92%"></div></div>
                 </div>
-                <div class="skill-item reveal">
-                    <span class="skill-num">02</span>
-                    <h3>User Experience</h3>
-                    <p>Mapping user journeys, building personas, and validating designs through research.</p>
+                <div class="skill-card reveal">
+                    <div class="sk-rank">A</div>
+                    <h4>UX Research</h4>
+                    <p>Gathering intel on user behavior and pain points.</p>
+                    <div class="sk-bar"><div class="sk-fill" style="--w:80%"></div></div>
                 </div>
-                <div class="skill-item reveal">
-                    <span class="skill-num">03</span>
-                    <h3>Prototyping</h3>
-                    <p>Bringing static designs to life with interactive, high-fidelity prototypes.</p>
+                <div class="skill-card reveal">
+                    <div class="sk-rank">S</div>
+                    <h4>Prototyping</h4>
+                    <p>Building interactive demos before the final boss fight.</p>
+                    <div class="sk-bar"><div class="sk-fill" style="--w:88%"></div></div>
                 </div>
-                <div class="skill-item reveal">
-                    <span class="skill-num">04</span>
-                    <h3>Design Systems</h3>
-                    <p>Building scalable component libraries that maintain visual consistency.</p>
+                <div class="skill-card reveal">
+                    <div class="sk-rank">A</div>
+                    <h4>Design Systems</h4>
+                    <p>Organizing the shadow army into a cohesive force.</p>
+                    <div class="sk-bar"><div class="sk-fill" style="--w:78%"></div></div>
                 </div>
-                <div class="skill-item reveal">
-                    <span class="skill-num">05</span>
-                    <h3>Visual Identity</h3>
-                    <p>Creating cohesive brand systems — logos, typography, color palettes.</p>
+                <div class="skill-card reveal">
+                    <div class="sk-rank">S</div>
+                    <h4>Visual Identity</h4>
+                    <p>Creating brand systems worthy of a monarch.</p>
+                    <div class="sk-bar"><div class="sk-fill" style="--w:85%"></div></div>
                 </div>
-                <div class="skill-item reveal">
-                    <span class="skill-num">06</span>
-                    <h3>Motion Design</h3>
-                    <p>Adding purposeful micro-interactions and transitions that guide users.</p>
+                <div class="skill-card reveal">
+                    <div class="sk-rank">B</div>
+                    <h4>Motion Design</h4>
+                    <p>Adding life to interfaces with purposeful animation.</p>
+                    <div class="sk-bar"><div class="sk-fill" style="--w:70%"></div></div>
                 </div>
             </div>
         </div>
@@ -149,37 +216,44 @@
     <section class="contact" id="contact">
         <div class="container">
             <div class="section-head reveal">
-                <span class="section-tag">Contact</span>
-                <h2>Let's connect</h2>
+                <span class="section-tag">[SYSTEM] MESSAGES</span>
+                <h2>Send a <span class="hl">Message</span></h2>
             </div>
-            <div class="contact-body reveal">
-                <p class="contact-intro">Have a project idea or just want to talk design? Reach out.</p>
-                <div class="contact-rows">
-                    <a href="mailto:surya@example.com" class="contact-row">
-                        <span class="cr-label">Email</span>
-                        <span class="cr-value">surya@example.com</span>
-                        <span class="cr-arrow">&rarr;</span>
-                    </a>
-                    <a href="https://linkedin.com" target="_blank" class="contact-row">
-                        <span class="cr-label">LinkedIn</span>
-                        <span class="cr-value">linkedin.com/in/surya</span>
-                        <span class="cr-arrow">&rarr;</span>
-                    </a>
-                    <a href="https://instagram.com" target="_blank" class="contact-row">
-                        <span class="cr-label">Instagram</span>
-                        <span class="cr-value">@surya.designs</span>
-                        <span class="cr-arrow">&rarr;</span>
-                    </a>
+            <div class="sys-window contact-window reveal">
+                <div class="sys-bar">
+                    <span class="sys-bar-dot"></span>
+                    <span class="sys-bar-title">NEW MESSAGE</span>
+                    <span class="sys-bar-x">—</span>
+                </div>
+                <div class="sys-body">
+                    <h3>Want to form a <span class="hl">party?</span></h3>
+                    <p>Whether it's a raid or just a chat — I'm ready.</p>
+                    <div class="msg-links">
+                        <a href="mailto:surya@example.com" class="msg-link">
+                            <span class="msg-key">[E]</span>
+                            <span class="msg-label">EMAIL</span>
+                            <span class="msg-value">surya@example.com</span>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" class="msg-link">
+                            <span class="msg-key">[L]</span>
+                            <span class="msg-label">LINKEDIN</span>
+                            <span class="msg-value">linkedin.com/in/surya</span>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" class="msg-link">
+                            <span class="msg-key">[I]</span>
+                            <span class="msg-label">INSTAGRAM</span>
+                            <span class="msg-value">@surya.designs</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
-        <div class="container footer-flex">
-            <span>&copy; 2026 Surya Pundir</span>
-            <span>Designed in Dehradun</span>
+        <div class="container footer-row">
+            <span>[S] SURYA PUNDIR © 2026</span>
+            <span>⚔️ ARISE ⚔️</span>
         </div>
     </footer>
 
