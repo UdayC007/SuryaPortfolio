@@ -10,10 +10,8 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Particle bg -->
     <div class="particles" id="particles"></div>
 
-    <!-- System notification -->
     <div class="sys-notif" id="sys-notif">
         <div class="sys-notif-inner">
             <span class="sys-icon">🔔</span>
@@ -22,12 +20,12 @@
         </div>
     </div>
 
-    <!-- Navigation -->
     <nav class="nav" id="nav">
-        <a href="#" class="nav-logo">[S] SURYA</a>
+        <a href="#" class="nav-logo"><span class="brand-mark"></span><span id="nav-name">[S] SURYA</span></a>
         <div class="nav-links" id="nav-links">
             <a href="#about">STATUS</a>
             <a href="#projects">QUESTS</a>
+            <a href="#curriculum">SEM I</a>
             <a href="#skills">SKILLS</a>
             <a href="#contact">MESSAGES</a>
         </div>
@@ -36,7 +34,7 @@
         </button>
     </nav>
 
-    <!-- Hero — Arise -->
+    <!-- Hero -->
     <section class="hero" id="hero">
         <div class="hero-content">
             <div class="sys-window hero-window anim-up">
@@ -47,19 +45,19 @@
                 </div>
                 <div class="sys-body">
                     <p class="sys-msg">A new quest is available.</p>
-                    <p class="sys-msg-sub">Player <span class="hl">SURYA PUNDIR</span> has entered the design dungeon.</p>
+                    <p class="sys-msg-sub">Player <span class="hl" id="hero-name-inline">SURYA PUNDIR</span> has entered the design dungeon.</p>
                 </div>
             </div>
             <h1 class="hero-name anim-up delay-1">
                 <span class="arise-text">ARISE</span>
-                <span class="hero-main-name">SURYA PUNDIR</span>
+                <span class="hero-main-name" id="hero-main-name">SURYA PUNDIR</span>
             </h1>
             <div class="hero-rank anim-up delay-2">
                 <span class="rank-badge">S</span>
-                <span class="rank-text">S-RANK UI/UX DESIGNER</span>
-                <span class="rank-loc">// DIT UNIVERSITY, DEHRADUN</span>
+                <span class="rank-text" id="hero-title">S-RANK UI/UX DESIGNER</span>
+                <span class="rank-loc" id="hero-college">// DIT UNIVERSITY, DEHRADUN</span>
             </div>
-            <p class="hero-desc anim-up delay-3">
+            <p class="hero-desc anim-up delay-3" id="hero-tagline">
                 Designing with the precision of a Shadow Monarch.<br>
                 Every interface is a dungeon conquered.
             </p>
@@ -71,9 +69,9 @@
                 <a href="#contact" class="btn-ghost-s">SEND MESSAGE →</a>
             </div>
         </div>
+        <div class="hero-portrait-photo" id="hero-portrait-photo"></div>
     </section>
 
-    <!-- Level bar -->
     <div class="level-bar">
         <div class="level-track">
             <span>⚔️ DUNGEON CLEARED</span>
@@ -86,12 +84,10 @@
             <span>🏆 RANK: S-CLASS</span>
             <span>👤 SHADOW DESIGNER</span>
             <span>🔮 SKILL: UI/UX MASTERY</span>
-            <span>⚡ ARISE</span>
-            <span>💀 BOSS DEFEATED</span>
         </div>
     </div>
 
-    <!-- About — Player Status -->
+    <!-- About -->
     <section class="about" id="about">
         <div class="container">
             <div class="section-head reveal">
@@ -100,42 +96,34 @@
             </div>
             <div class="about-grid">
                 <div class="about-text reveal">
+                    <div class="about-portrait" id="about-portrait"></div>
                     <div class="sys-window">
                         <div class="sys-bar">
                             <span class="sys-bar-dot"></span>
                             <span class="sys-bar-title">PLAYER DATA</span>
                             <span class="sys-bar-x">—</span>
                         </div>
-                        <div class="sys-body player-stats">
-                            <div class="ps-row"><span class="ps-key">Name</span><span class="ps-val">Surya Pundir</span></div>
-                            <div class="ps-row"><span class="ps-key">Class</span><span class="ps-val hl">UI/UX Designer</span></div>
-                            <div class="ps-row"><span class="ps-key">Rank</span><span class="ps-val rank-s">S</span></div>
-                            <div class="ps-row"><span class="ps-key">Level</span><span class="ps-val">2nd Year</span></div>
-                            <div class="ps-row"><span class="ps-key">Guild</span><span class="ps-val">DIT University, Dehradun</span></div>
-                            <div class="ps-row"><span class="ps-key">Title</span><span class="ps-val hl">Shadow Designer</span></div>
-                        </div>
+                        <div class="sys-body player-stats" id="player-stats"></div>
                     </div>
                 </div>
                 <div class="about-cards">
                     <div class="quest-card reveal">
                         <div class="qc-rank"><span class="rank-badge sm">A</span></div>
                         <div class="qc-body">
-                            <h4>Design Arsenal</h4>
-                            <p>Weapons equipped for dungeon raids.</p>
-                            <div class="skill-tags">
-                                <span class="s-tag">Figma</span>
-                                <span class="s-tag">Adobe XD</span>
-                                <span class="s-tag">Photoshop</span>
-                                <span class="s-tag">Illustrator</span>
-                                <span class="s-tag">After Effects</span>
-                            </div>
+                            <h4>Bio</h4>
+                            <p id="about-bio">Loading…</p>
                         </div>
                     </div>
-                    <div class="quest-card reveal">
-                        <div class="qc-rank"><span class="rank-badge sm">S</span></div>
-                        <div class="qc-body">
-                            <h4>Special Ability</h4>
-                            <p>Can transform any static screen into a living, breathing interface. Passive: +50% user satisfaction.</p>
+                    <div class="about-extra">
+                        <div class="extra-card">
+                            <span class="ec-tag">// PERSONAL TOUCH</span>
+                            <h4>Off the screen</h4>
+                            <p id="personal-touch">—</p>
+                        </div>
+                        <div class="extra-card">
+                            <span class="ec-tag">// GOALS</span>
+                            <h4>Where I'm headed</h4>
+                            <p id="goals-text">—</p>
                         </div>
                     </div>
                 </div>
@@ -143,7 +131,18 @@
         </div>
     </section>
 
-    <!-- Projects — Quests -->
+    <!-- Curriculum / Semester I subjects -->
+    <section class="curriculum" id="curriculum">
+        <div class="container">
+            <div class="section-head reveal">
+                <span class="section-tag">[SYSTEM] CURRICULUM // SEMESTER I</span>
+                <h2>Subjects &amp; <span class="hl">Faculty</span></h2>
+            </div>
+            <div class="subject-grid" id="subject-grid"></div>
+        </div>
+    </section>
+
+    <!-- Projects -->
     <section class="projects" id="projects">
         <div class="container">
             <div class="section-head reveal">
@@ -171,44 +170,7 @@
                 <span class="section-tag">[SYSTEM] SKILL TREE</span>
                 <h2>Active <span class="hl">Skills</span></h2>
             </div>
-            <div class="skills-grid">
-                <div class="skill-card reveal">
-                    <div class="sk-rank">S</div>
-                    <h4>UI Design</h4>
-                    <p>Crafting pixel-perfect interfaces with surgical precision.</p>
-                    <div class="sk-bar"><div class="sk-fill" style="--w:92%"></div></div>
-                </div>
-                <div class="skill-card reveal">
-                    <div class="sk-rank">A</div>
-                    <h4>UX Research</h4>
-                    <p>Gathering intel on user behavior and pain points.</p>
-                    <div class="sk-bar"><div class="sk-fill" style="--w:80%"></div></div>
-                </div>
-                <div class="skill-card reveal">
-                    <div class="sk-rank">S</div>
-                    <h4>Prototyping</h4>
-                    <p>Building interactive demos before the final boss fight.</p>
-                    <div class="sk-bar"><div class="sk-fill" style="--w:88%"></div></div>
-                </div>
-                <div class="skill-card reveal">
-                    <div class="sk-rank">A</div>
-                    <h4>Design Systems</h4>
-                    <p>Organizing the shadow army into a cohesive force.</p>
-                    <div class="sk-bar"><div class="sk-fill" style="--w:78%"></div></div>
-                </div>
-                <div class="skill-card reveal">
-                    <div class="sk-rank">S</div>
-                    <h4>Visual Identity</h4>
-                    <p>Creating brand systems worthy of a monarch.</p>
-                    <div class="sk-bar"><div class="sk-fill" style="--w:85%"></div></div>
-                </div>
-                <div class="skill-card reveal">
-                    <div class="sk-rank">B</div>
-                    <h4>Motion Design</h4>
-                    <p>Adding life to interfaces with purposeful animation.</p>
-                    <div class="sk-bar"><div class="sk-fill" style="--w:70%"></div></div>
-                </div>
-            </div>
+            <div class="skills-grid" id="skills-grid"></div>
         </div>
     </section>
 
@@ -228,23 +190,7 @@
                 <div class="sys-body">
                     <h3>Want to form a <span class="hl">party?</span></h3>
                     <p>Whether it's a raid or just a chat — I'm ready.</p>
-                    <div class="msg-links">
-                        <a href="mailto:surya@example.com" class="msg-link">
-                            <span class="msg-key">[E]</span>
-                            <span class="msg-label">EMAIL</span>
-                            <span class="msg-value">surya@example.com</span>
-                        </a>
-                        <a href="https://linkedin.com" target="_blank" class="msg-link">
-                            <span class="msg-key">[L]</span>
-                            <span class="msg-label">LINKEDIN</span>
-                            <span class="msg-value">linkedin.com/in/surya</span>
-                        </a>
-                        <a href="https://instagram.com" target="_blank" class="msg-link">
-                            <span class="msg-key">[I]</span>
-                            <span class="msg-label">INSTAGRAM</span>
-                            <span class="msg-value">@surya.designs</span>
-                        </a>
-                    </div>
+                    <div class="msg-links" id="msg-links"></div>
                 </div>
             </div>
         </div>
@@ -252,12 +198,11 @@
 
     <footer class="footer">
         <div class="container footer-row">
-            <span>[S] SURYA PUNDIR © 2026</span>
+            <span id="footer-name">[S] SURYA PUNDIR © 2026</span>
             <span>⚔️ ARISE ⚔️</span>
         </div>
     </footer>
 
-    <script src="js/data.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quest — Surya Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="particles"></div>
+
+  <nav class="nav" id="nav">
+    <a href="/" class="nav-logo"><span class="brand-mark"></span><span id="nav-name">[S] SURYA</span></a>
+    <div class="nav-links" id="nav-links">
+      <a href="/#about">STATUS</a>
+      <a href="/#projects">QUESTS</a>
+      <a href="/#contact">MESSAGES</a>
+    </div>
+  </nav>
+
+  <main class="project-page">
+    <div class="container">
+      <a href="/#projects" class="project-back">← Back to quests</a>
+      <div id="project-root">
+        <p style="color:var(--text-muted)">Loading…</p>
+      </div>
+    </div>
+  </main>
+
+  <div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
+    <button class="lb-close" onclick="closeLightbox()" aria-label="Close">✕</button>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <script src="/js/project.js"></script>
+</body>
+</html>

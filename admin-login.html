@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body>
+  <div class="login-screen">
+    <div class="login-card">
+      <div class="login-logo" id="brand-text">Studio<span>.</span></div>
+      <h1>Admin Portal</h1>
+      <p>Enter your password to manage your portfolio.</p>
+      <form id="login-form">
+        <div class="input-group">
+          <input type="password" id="pw" placeholder="Password" autocomplete="current-password" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+      </form>
+      <div class="login-error" id="err"></div>
+    </div>
+  </div>
+  <script>
+    const form = document.getElementById('login-form');
+    const err  = document.getElementById('err');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      err.textContent = '';
+      err.classList.remove('show');
+      try {
+        const r = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: document.getElementById('pw').value })
+        });
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || 'Login failed');
+        window.location.href = '/admin';
+      } catch (e) {
+        err.textContent = e.message;
+        err.classList.add('show');
+      }
+    });
+    // Show site name from API
+    fetch('/api/site').then(r => r.json()).then(s => {
+      const n = (s && s.profile && s.profile.name) ? s.profile.name.split(' ')[0] : 'Studio';
+      document.getElementById('brand-text').innerHTML = n + '<span>.</span>';
+    }).catch(() => {});
+  </script>
+</body>
+</html>

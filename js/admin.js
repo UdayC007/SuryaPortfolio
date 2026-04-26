@@ -1,397 +1,417 @@
-/* ========================================
-   Admin Portal Logic
-   Login, CRUD, settings
-   ======================================== */
+// Surya Admin — server-backed
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? '' : s)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
-document.addEventListener('DOMContentLoaded', () => {
+const toast = (msg, kind = '') => {
+  const el = $('toast'); if (!el) return;
+  el.className = 'toast show ' + kind;
+  el.textContent = msg;
+  setTimeout(() => el.classList.remove('show'), 2800);
+};
+const showMsg = (id, text, ok = false) => {
+  const el = $(id); if (!el) return;
+  el.className = 'form-message ' + (ok ? 'success' : 'error');
+  el.textContent = text;
+  if (ok) setTimeout(() => { el.textContent = ''; }, 2400);
+};
 
-    // --- Elements ---
-    const loginScreen = document.getElementById('login-screen');
-    const dashboard = document.getElementById('admin-dashboard');
-    const loginForm = document.getElementById('login-form');
-    const loginError = document.getElementById('login-error');
-    const loginPassword = document.getElementById('login-password');
+// Bootstrap auth — bounce to login if not authed
+(async () => {
+  try {
+    const r = await fetch('/api/me');
+    const d = await r.json();
+    if (!d.isAdmin) window.location.href = '/admin-login.html';
+  } catch (e) { window.location.href = '/admin-login.html'; }
+})();
 
-    const projectsList = document.getElementById('projects-list');
-    const emptyProjects = document.getElementById('empty-projects');
-    const addProjectBtn = document.getElementById('add-project-btn');
-
-    const modalOverlay = document.getElementById('modal-overlay');
-    const modalTitle = document.getElementById('modal-title');
-    const modalClose = document.getElementById('modal-close');
-    const modalCancel = document.getElementById('modal-cancel');
-    const projectForm = document.getElementById('project-form');
-
-    const toast = document.getElementById('toast');
-    const logoutBtn = document.getElementById('logout-btn');
-
-    // Sidebar navigation
-    const sidebarLinks = document.querySelectorAll('.sidebar-link[data-section]');
-    const sections = {
-        projects: document.getElementById('section-projects'),
-        settings: document.getElementById('section-settings')
-    };
-
-    // Settings
-    const passwordForm = document.getElementById('password-form');
-    const resetBtn = document.getElementById('reset-btn');
-
-    // Color picker
-    const colorInput = document.getElementById('project-color');
-    const colorValue = document.getElementById('color-value');
-    colorInput.addEventListener('input', () => {
-        colorValue.textContent = colorInput.value;
-    });
-
-    // --- Image Upload ---
-    const uploadArea = document.getElementById('upload-area');
-    const uploadPlaceholder = document.getElementById('upload-placeholder');
-    const uploadPreview = document.getElementById('upload-preview');
-    const uploadRemove = document.getElementById('upload-remove');
-    const imageFileInput = document.getElementById('project-image-file');
-    const imageHidden = document.getElementById('project-image');
-    const imageUrlInput = document.getElementById('project-image-url');
-
-    // Click to upload
-    uploadArea.addEventListener('click', (e) => {
-        if (e.target.closest('.upload-remove')) return;
-        imageFileInput.click();
-    });
-
-    // File selected
-    imageFileInput.addEventListener('change', () => {
-        if (imageFileInput.files && imageFileInput.files[0]) {
-            handleImageFile(imageFileInput.files[0]);
-        }
-    });
-
-    // Drag and drop
-    uploadArea.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        uploadArea.classList.add('dragover');
-    });
-
-    uploadArea.addEventListener('dragleave', () => {
-        uploadArea.classList.remove('dragover');
-    });
-
-    uploadArea.addEventListener('drop', (e) => {
-        e.preventDefault();
-        uploadArea.classList.remove('dragover');
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            handleImageFile(e.dataTransfer.files[0]);
-        }
-    });
-
-    // Remove image
-    uploadRemove.addEventListener('click', (e) => {
-        e.stopPropagation();
-        clearImageUpload();
-    });
-
-    // URL input fallback — show preview when URL is pasted
-    imageUrlInput.addEventListener('input', () => {
-        const url = imageUrlInput.value.trim();
-        if (url) {
-            showImagePreview(url);
-            imageHidden.value = url;
-        } else {
-            clearImageUpload();
-        }
-    });
-
-    function handleImageFile(file) {
-        // Validate type
-        const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
-        if (!validTypes.includes(file.type)) {
-            showToast('Only JPG, PNG, and WebP images are allowed.', 'error');
-            return;
-        }
-        // Validate size (2MB max)
-        if (file.size > 2 * 1024 * 1024) {
-            showToast('Image must be under 2MB.', 'error');
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const dataUrl = e.target.result;
-            showImagePreview(dataUrl);
-            imageHidden.value = dataUrl;
-            imageUrlInput.value = '';
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function showImagePreview(src) {
-        uploadPreview.src = src;
-        uploadPreview.style.display = 'block';
-        uploadPlaceholder.style.display = 'none';
-        uploadRemove.style.display = 'flex';
-    }
-
-    function clearImageUpload() {
-        uploadPreview.src = '';
-        uploadPreview.style.display = 'none';
-        uploadPlaceholder.style.display = 'flex';
-        uploadRemove.style.display = 'none';
-        imageHidden.value = '';
-        imageUrlInput.value = '';
-        imageFileInput.value = '';
-    }
-
-    // --- Login ---
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const password = loginPassword.value;
-        if (PortfolioData.verifyAdmin(password)) {
-            loginScreen.style.display = 'none';
-            dashboard.style.display = 'flex';
-            renderProjectsList();
-        } else {
-            loginError.classList.add('show');
-            loginPassword.value = '';
-            loginPassword.focus();
-            setTimeout(() => loginError.classList.remove('show'), 3000);
-        }
-    });
-
-    // --- Logout ---
-    logoutBtn.addEventListener('click', () => {
-        dashboard.style.display = 'none';
-        loginScreen.style.display = '';
-        loginPassword.value = '';
-    });
-
-    // --- Sidebar Navigation ---
-    sidebarLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const section = link.dataset.section;
-            sidebarLinks.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-
-            Object.keys(sections).forEach(key => {
-                sections[key].style.display = key === section ? '' : 'none';
-            });
-        });
-    });
-
-    // --- Render Projects List ---
-    function renderProjectsList() {
-        const projects = PortfolioData.getProjects();
-
-        if (!projects || projects.length === 0) {
-            projectsList.style.display = 'none';
-            emptyProjects.style.display = '';
-            return;
-        }
-
-        projectsList.style.display = '';
-        emptyProjects.style.display = 'none';
-        projectsList.innerHTML = '';
-
-        projects.forEach(project => {
-            const item = document.createElement('div');
-            item.className = 'project-item';
-
-            const tagsHtml = (project.tags || [])
-                .map(t => `<span class="project-item-tag">${escapeHtml(t)}</span>`)
-                .join('');
-
-            const thumbHtml = project.image
-                ? `<img class="project-item-thumb" src="${escapeHtml(project.image)}" alt="">`
-                : `<div class="project-item-thumb project-item-thumb-letter" style="background: ${escapeHtml(project.color || '#ff6b35')}">${escapeHtml(project.title.charAt(0))}</div>`;
-
-            item.innerHTML = `
-                ${thumbHtml}
-                <div class="project-item-info">
-                    <div class="project-item-title">${escapeHtml(project.title)}</div>
-                    <div class="project-item-desc">${escapeHtml(project.description)}</div>
-                    <div class="project-item-tags">${tagsHtml}</div>
-                </div>
-                <div class="project-item-actions">
-                    <button class="btn-icon edit-btn" data-id="${escapeHtml(project.id)}" title="Edit">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
-                            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                        </svg>
-                    </button>
-                    <button class="btn-icon danger delete-btn" data-id="${escapeHtml(project.id)}" title="Delete">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="3 6 5 6 21 6"/>
-                            <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                        </svg>
-                    </button>
-                </div>
-            `;
-
-            projectsList.appendChild(item);
-        });
-
-        // Bind edit buttons
-        document.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', () => openEditModal(btn.dataset.id));
-        });
-
-        // Bind delete buttons
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', () => deleteProject(btn.dataset.id));
-        });
-    }
-
-    // --- Modal ---
-    function openModal() {
-        modalOverlay.classList.add('active');
-    }
-
-    function closeModal() {
-        modalOverlay.classList.remove('active');
-        projectForm.reset();
-        document.getElementById('project-id').value = '';
-        colorInput.value = '#ff6b35';
-        colorValue.textContent = '#ff6b35';
-        clearImageUpload();
-    }
-
-    addProjectBtn.addEventListener('click', () => {
-        modalTitle.textContent = 'Add Project';
-        document.getElementById('modal-submit').textContent = 'Add Project';
-        closeModal(); // reset first
-        openModal();
-    });
-
-    modalClose.addEventListener('click', closeModal);
-    modalCancel.addEventListener('click', closeModal);
-    modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) closeModal();
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
-    });
-
-    function openEditModal(id) {
-        const project = PortfolioData.getProject(id);
-        if (!project) return;
-
-        modalTitle.textContent = 'Edit Project';
-        document.getElementById('modal-submit').textContent = 'Save Changes';
-
-        document.getElementById('project-id').value = project.id;
-        document.getElementById('project-title').value = project.title;
-        document.getElementById('project-description').value = project.description;
-        document.getElementById('project-tags').value = (project.tags || []).join(', ');
-        document.getElementById('project-link').value = project.link || '';
-        colorInput.value = project.color || '#ff6b35';
-        colorValue.textContent = project.color || '#ff6b35';
-
-        // Show existing image in preview
-        if (project.image) {
-            imageHidden.value = project.image;
-            if (project.image.startsWith('data:')) {
-                showImagePreview(project.image);
-                imageUrlInput.value = '';
-            } else {
-                showImagePreview(project.image);
-                imageUrlInput.value = project.image;
-            }
-        } else {
-            clearImageUpload();
-        }
-
-        openModal();
-    }
-
-    // --- Save Project ---
-    projectForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const id = document.getElementById('project-id').value;
-        const projectData = {
-            title: document.getElementById('project-title').value.trim(),
-            description: document.getElementById('project-description').value.trim(),
-            tags: document.getElementById('project-tags').value
-                .split(',')
-                .map(t => t.trim())
-                .filter(t => t),
-            image: imageHidden.value.trim() || imageUrlInput.value.trim(),
-            link: document.getElementById('project-link').value.trim(),
-            color: colorInput.value
-        };
-
-        if (id) {
-            PortfolioData.updateProject(id, projectData);
-            showToast('Project updated!', 'success');
-        } else {
-            PortfolioData.addProject(projectData);
-            showToast('Project added!', 'success');
-        }
-
-        closeModal();
-        renderProjectsList();
-    });
-
-    // --- Delete Project ---
-    function deleteProject(id) {
-        const project = PortfolioData.getProject(id);
-        if (!project) return;
-
-        if (confirm(`Delete "${project.title}"? This cannot be undone.`)) {
-            PortfolioData.deleteProject(id);
-            showToast('Project deleted.', 'error');
-            renderProjectsList();
-        }
-    }
-
-    // --- Settings: Change Password ---
-    passwordForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const msg = document.getElementById('password-message');
-        const oldPass = document.getElementById('old-password').value;
-        const newPass = document.getElementById('new-password').value;
-        const confirmPass = document.getElementById('confirm-password').value;
-
-        if (newPass !== confirmPass) {
-            msg.textContent = 'New passwords do not match.';
-            msg.className = 'form-message error';
-            return;
-        }
-
-        if (PortfolioData.changePassword(oldPass, newPass)) {
-            msg.textContent = 'Password updated successfully!';
-            msg.className = 'form-message success';
-            passwordForm.reset();
-        } else {
-            msg.textContent = 'Current password is incorrect.';
-            msg.className = 'form-message error';
-        }
-    });
-
-    // --- Settings: Reset ---
-    resetBtn.addEventListener('click', () => {
-        if (confirm('Reset all projects to sample data? This will remove all your current projects.')) {
-            localStorage.removeItem('uday_portfolio_projects');
-            PortfolioData.getProjects(); // re-initializes defaults
-            renderProjectsList();
-            showToast('Projects reset to defaults.', 'success');
-        }
-    });
-
-    // --- Toast ---
-    function showToast(message, type = '') {
-        toast.textContent = message;
-        toast.className = 'toast show ' + type;
-        setTimeout(() => {
-            toast.className = 'toast';
-        }, 3000);
-    }
-
-    // --- Utility ---
-    function escapeHtml(str) {
-        if (!str) return '';
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
+// ---------- Sidebar nav ----------
+const SECTIONS = ['projects', 'profile', 'contact', 'subjects', 'skills', 'photos', 'password'];
+document.querySelectorAll('.sidebar-link[data-section]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    switchSection(link.dataset.section);
+  });
 });
+function switchSection(name) {
+  document.querySelectorAll('.sidebar-link[data-section]').forEach(l => l.classList.toggle('active', l.dataset.section === name));
+  SECTIONS.forEach(s => {
+    const sec = $('section-' + s); if (sec) sec.style.display = (s === name ? '' : 'none');
+  });
+  if (name === 'projects')  loadProjects();
+  if (name === 'profile')   loadProfile();
+  if (name === 'contact')   loadContact();
+  if (name === 'subjects')  loadSubjects();
+  if (name === 'skills')    loadSkills();
+  if (name === 'photos')    loadPhotos();
+}
+
+$('logout-btn').addEventListener('click', async () => {
+  await fetch('/api/logout', { method: 'POST' });
+  window.location.href = '/admin-login.html';
+});
+
+// ---------- PROJECTS ----------
+let pendingFiles = [];
+let keptImages = [];
+
+async function loadProjects() {
+  const list = $('projects-list');
+  const empty = $('empty-projects');
+  list.innerHTML = '<p class="muted" style="padding:20px;color:var(--text-muted)">Loading…</p>';
+  try {
+    const r = await fetch('/api/projects');
+    const projects = await r.json();
+    if (!projects.length) { list.innerHTML = ''; empty.style.display = ''; return; }
+    empty.style.display = 'none';
+    list.innerHTML = projects.map(p => {
+      const cover = p.images && p.images[0];
+      const tags = (p.tags || []).slice(0, 3).map(t => `<span class="project-item-tag">${esc(t)}</span>`).join('');
+      return `
+        <div class="project-item">
+          <div class="project-item-thumb" ${cover ? `style="background:url(${esc(cover)}) center/cover"` : `style="background:${esc(p.color || '#7c3aed')}"`}>
+            ${cover ? '' : `<span class="project-item-thumb-letter">${esc((p.title || '?').charAt(0))}</span>`}
+          </div>
+          <div class="project-item-info">
+            <div class="project-item-title">${esc(p.title)}</div>
+            <div class="project-item-desc">${esc((p.description || '').slice(0, 100))}</div>
+            <div class="project-item-tags">${tags}<span class="project-item-tag">${(p.images || []).length} photo${p.images && p.images.length === 1 ? '' : 's'}</span></div>
+          </div>
+          <div class="project-item-actions">
+            <a href="/project/${p.id}" target="_blank" class="btn-icon" title="View">↗</a>
+            <button class="btn-icon" data-edit="${p.id}" title="Edit">✎</button>
+            <button class="btn-icon danger" data-delete="${p.id}" data-title="${esc(p.title)}" title="Delete">✕</button>
+          </div>
+        </div>`;
+    }).join('');
+    list.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => editProject(b.dataset.edit)));
+    list.querySelectorAll('[data-delete]').forEach(b => b.addEventListener('click', () => deleteProject(b.dataset.delete, b.dataset.title)));
+  } catch (e) {
+    list.innerHTML = `<p style="color:var(--danger);padding:20px">${esc(e.message)}</p>`;
+  }
+}
+
+async function deleteProject(id, title) {
+  if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
+  try {
+    const r = await fetch('/api/projects/' + id, { method: 'DELETE' });
+    if (!r.ok) throw new Error('Delete failed');
+    toast('Project deleted', 'success');
+    loadProjects();
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+async function editProject(id) {
+  try {
+    const r = await fetch('/api/projects/' + id);
+    const p = await r.json();
+    $('project-id').value = p.id;
+    $('project-title').value = p.title || '';
+    $('project-category').value = p.category || '';
+    $('project-year').value = p.year || '';
+    $('project-teacher').value = p.teacher || '';
+    $('project-description').value = p.description || '';
+    $('project-tags').value = (p.tags || []).join(', ');
+    $('project-link').value = p.link || '';
+    $('project-color').value = p.color || '#7c3aed';
+    $('color-value').textContent = p.color || '#7c3aed';
+    pendingFiles = [];
+    keptImages = (p.images || []).slice();
+    renderImagePreview();
+    $('modal-title').textContent = 'Edit Project';
+    openModal();
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+const modalOverlay = $('modal-overlay');
+const openModal = () => modalOverlay.classList.add('active');
+const closeModal = () => modalOverlay.classList.remove('active');
+$('add-project-btn').addEventListener('click', () => {
+  $('project-form').reset();
+  $('project-id').value = '';
+  $('project-color').value = '#7c3aed';
+  $('color-value').textContent = '#7c3aed';
+  pendingFiles = []; keptImages = [];
+  renderImagePreview();
+  $('modal-title').textContent = 'Add Project';
+  openModal();
+});
+$('modal-close').addEventListener('click', closeModal);
+$('modal-cancel').addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+
+$('project-color').addEventListener('input', (e) => { $('color-value').textContent = e.target.value; });
+
+// Image picker
+const imgInput = $('project-images');
+const uploadArea = $('upload-area');
+imgInput.addEventListener('change', (e) => {
+  for (const f of e.target.files) pendingFiles.push(f);
+  imgInput.value = '';
+  renderImagePreview();
+});
+['dragenter', 'dragover'].forEach(ev => uploadArea.addEventListener(ev, (e) => { e.preventDefault(); e.stopPropagation(); uploadArea.classList.add('dragover'); }));
+['dragleave', 'drop'].forEach(ev => uploadArea.addEventListener(ev, (e) => { e.preventDefault(); e.stopPropagation(); uploadArea.classList.remove('dragover'); }));
+uploadArea.addEventListener('drop', (e) => {
+  for (const f of e.dataTransfer.files) if (f.type.startsWith('image/')) pendingFiles.push(f);
+  renderImagePreview();
+});
+
+function renderImagePreview() {
+  const wrap = $('image-preview');
+  const items = [];
+  keptImages.forEach((url, i) => {
+    items.push(`<div class="img-thumb" data-kept="${i}"><img src="${esc(url)}" alt=""><button type="button" class="img-remove" data-kept-rm="${i}">✕</button></div>`);
+  });
+  pendingFiles.forEach((f, i) => {
+    const url = URL.createObjectURL(f);
+    items.push(`<div class="img-thumb" data-pending="${i}"><img src="${url}" alt=""><button type="button" class="img-remove" data-pending-rm="${i}">✕</button></div>`);
+  });
+  wrap.innerHTML = items.join('');
+  wrap.querySelectorAll('[data-kept-rm]').forEach(b => b.addEventListener('click', () => { keptImages.splice(parseInt(b.dataset.keptRm, 10), 1); renderImagePreview(); }));
+  wrap.querySelectorAll('[data-pending-rm]').forEach(b => b.addEventListener('click', () => { pendingFiles.splice(parseInt(b.dataset.pendingRm, 10), 1); renderImagePreview(); }));
+}
+
+$('project-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = $('project-id').value;
+  const fd = new FormData();
+  fd.append('title',       $('project-title').value);
+  fd.append('category',    $('project-category').value);
+  fd.append('year',        $('project-year').value);
+  fd.append('teacher',     $('project-teacher').value);
+  fd.append('description', $('project-description').value);
+  fd.append('tags',        JSON.stringify($('project-tags').value.split(',').map(t => t.trim()).filter(Boolean)));
+  fd.append('link',        $('project-link').value);
+  fd.append('color',       $('project-color').value);
+  if (id) fd.append('keepImages', JSON.stringify(keptImages));
+  pendingFiles.forEach(f => fd.append('images', f));
+
+  const url = id ? '/api/projects/' + id : '/api/projects';
+  const method = id ? 'PUT' : 'POST';
+  try {
+    const r = await fetch(url, { method, body: fd });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'Save failed');
+    closeModal();
+    toast(id ? 'Project updated' : 'Project added', 'success');
+    loadProjects();
+  } catch (e) { showMsg('project-msg', e.message); }
+});
+
+// ---------- PROFILE ----------
+async function loadProfile() {
+  const r = await fetch('/api/site');
+  const s = await r.json();
+  const p = s.profile || {};
+  $('p-name').value = p.name || '';
+  $('p-title').value = p.title || '';
+  $('p-year').value = p.year || '';
+  $('p-college').value = p.college || '';
+  $('p-tagline').value = p.tagline || '';
+  $('p-bio').value = p.bio || '';
+  $('p-personalTouch').value = p.personalTouch || '';
+  $('p-goals').value = p.goals || '';
+}
+$('profile-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  try {
+    const r = await fetch('/api/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: $('p-name').value,
+        title: $('p-title').value,
+        year: $('p-year').value,
+        college: $('p-college').value,
+        tagline: $('p-tagline').value,
+        bio: $('p-bio').value,
+        personalTouch: $('p-personalTouch').value,
+        goals: $('p-goals').value
+      })
+    });
+    if (!r.ok) throw new Error((await r.json()).error || 'Save failed');
+    showMsg('profile-msg', 'Saved.', true);
+    toast('Profile saved', 'success');
+  } catch (e) { showMsg('profile-msg', e.message); }
+});
+
+// ---------- CONTACT ----------
+async function loadContact() {
+  const r = await fetch('/api/site');
+  const s = await r.json();
+  const c = s.contact || {};
+  $('c-email').value = c.email || '';
+  $('c-instagram').value = c.instagram || '';
+  $('c-twitter').value = c.twitter || '';
+  $('c-linkedin').value = c.linkedin || '';
+}
+$('contact-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  try {
+    const r = await fetch('/api/contact', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: $('c-email').value,
+        instagram: $('c-instagram').value.replace(/^@/, ''),
+        twitter: $('c-twitter').value.replace(/^@/, ''),
+        linkedin: $('c-linkedin').value
+      })
+    });
+    if (!r.ok) throw new Error((await r.json()).error || 'Save failed');
+    showMsg('contact-msg', 'Saved.', true);
+    toast('Socials saved', 'success');
+  } catch (e) { showMsg('contact-msg', e.message); }
+});
+
+// ---------- SUBJECTS (repeater) ----------
+let subjectsState = [];
+async function loadSubjects() {
+  const r = await fetch('/api/site');
+  const s = await r.json();
+  subjectsState = (s.subjects || []).slice();
+  if (!subjectsState.length) subjectsState = [{ code: '', name: '', faculty: '' }];
+  renderSubjects();
+}
+function renderSubjects() {
+  const wrap = $('subjects-repeater');
+  wrap.innerHTML = subjectsState.map((s, i) => `
+    <div class="repeater-row">
+      <input type="text" class="rep-input" data-field="code" data-i="${i}" value="${esc(s.code)}" placeholder="Code (e.g. CSE101)" />
+      <input type="text" class="rep-input flex" data-field="name" data-i="${i}" value="${esc(s.name)}" placeholder="Subject name" />
+      <input type="text" class="rep-input flex" data-field="faculty" data-i="${i}" value="${esc(s.faculty)}" placeholder="Faculty name" />
+      <button type="button" class="btn-icon danger" data-rm="${i}" title="Remove">✕</button>
+    </div>`).join('');
+  wrap.querySelectorAll('.rep-input').forEach(inp => inp.addEventListener('input', (e) => {
+    const i = parseInt(e.target.dataset.i, 10); const f = e.target.dataset.field;
+    subjectsState[i][f] = e.target.value;
+  }));
+  wrap.querySelectorAll('[data-rm]').forEach(b => b.addEventListener('click', () => {
+    subjectsState.splice(parseInt(b.dataset.rm, 10), 1);
+    if (!subjectsState.length) subjectsState = [{ code: '', name: '', faculty: '' }];
+    renderSubjects();
+  }));
+}
+$('add-subject-btn').addEventListener('click', () => { subjectsState.push({ code: '', name: '', faculty: '' }); renderSubjects(); });
+$('save-subjects-btn').addEventListener('click', async () => {
+  try {
+    const cleaned = subjectsState.filter(s => (s.name || '').trim());
+    const r = await fetch('/api/subjects', {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cleaned)
+    });
+    if (!r.ok) throw new Error((await r.json()).error || 'Save failed');
+    showMsg('subjects-msg', 'Saved.', true);
+    toast('Curriculum saved', 'success');
+  } catch (e) { showMsg('subjects-msg', e.message); }
+});
+
+// ---------- SKILLS (repeater) ----------
+let skillsState = [];
+async function loadSkills() {
+  const r = await fetch('/api/site');
+  const s = await r.json();
+  skillsState = (s.skills || []).slice();
+  if (!skillsState.length) skillsState = [{ name: '', level: 70, rank: 'B' }];
+  renderSkills();
+}
+function renderSkills() {
+  const wrap = $('skills-repeater');
+  wrap.innerHTML = skillsState.map((s, i) => `
+    <div class="repeater-row">
+      <input type="text" class="rep-input flex" data-field="name" data-i="${i}" value="${esc(s.name)}" placeholder="Skill name" />
+      <input type="number" class="rep-input small" data-field="level" data-i="${i}" value="${s.level || 0}" min="0" max="100" placeholder="Level %" />
+      <input type="text" class="rep-input small" data-field="rank" data-i="${i}" value="${esc(s.rank)}" placeholder="Rank (S/A/B)" />
+      <button type="button" class="btn-icon danger" data-rm="${i}" title="Remove">✕</button>
+    </div>`).join('');
+  wrap.querySelectorAll('.rep-input').forEach(inp => inp.addEventListener('input', (e) => {
+    const i = parseInt(e.target.dataset.i, 10); const f = e.target.dataset.field;
+    skillsState[i][f] = (f === 'level') ? parseInt(e.target.value, 10) : e.target.value;
+  }));
+  wrap.querySelectorAll('[data-rm]').forEach(b => b.addEventListener('click', () => {
+    skillsState.splice(parseInt(b.dataset.rm, 10), 1);
+    if (!skillsState.length) skillsState = [{ name: '', level: 70, rank: 'B' }];
+    renderSkills();
+  }));
+}
+$('add-skill-btn').addEventListener('click', () => { skillsState.push({ name: '', level: 70, rank: 'B' }); renderSkills(); });
+$('save-skills-btn').addEventListener('click', async () => {
+  try {
+    const cleaned = skillsState.filter(s => (s.name || '').trim());
+    const r = await fetch('/api/skills', {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cleaned)
+    });
+    if (!r.ok) throw new Error((await r.json()).error || 'Save failed');
+    showMsg('skills-msg', 'Saved.', true);
+    toast('Skills saved', 'success');
+  } catch (e) { showMsg('skills-msg', e.message); }
+});
+
+// ---------- PHOTOS ----------
+const PHOTO_SLOTS = ['hero', 'about', 'brand'];
+async function loadPhotos() {
+  const r = await fetch('/api/site');
+  const s = await r.json();
+  const ph = s.photos || {};
+  PHOTO_SLOTS.forEach(slot => paintSlot(slot, ph[slot]));
+}
+function paintSlot(slot, url) {
+  const frame = document.querySelector(`.photo-slot[data-slot="${slot}"] .slot-frame`);
+  if (!frame) return;
+  if (url) frame.innerHTML = `<img src="${esc(url)}?t=${Date.now()}" alt="" />`;
+  else frame.innerHTML = '<span class="slot-empty">Click to upload</span>';
+}
+PHOTO_SLOTS.forEach(slot => {
+  const input = $('photo-' + slot);
+  if (!input) return;
+  input.addEventListener('change', async () => {
+    const f = input.files && input.files[0];
+    if (!f) return;
+    const fd = new FormData(); fd.append('image', f);
+    try {
+      const r = await fetch('/api/photos/' + slot, { method: 'PUT', body: fd });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Upload failed');
+      paintSlot(slot, d.url);
+      toast('Photo updated', 'success');
+    } catch (e) { showMsg('photos-msg', e.message); }
+    input.value = '';
+  });
+});
+document.querySelectorAll('[data-remove]').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const slot = btn.dataset.remove;
+    if (!confirm(`Remove the ${slot} photo?`)) return;
+    try {
+      const r = await fetch('/api/photos/' + slot, { method: 'DELETE' });
+      if (!r.ok) throw new Error((await r.json()).error || 'Delete failed');
+      paintSlot(slot, null);
+      toast('Photo removed', 'success');
+    } catch (e) { showMsg('photos-msg', e.message); }
+  });
+});
+
+// ---------- PASSWORD ----------
+$('password-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const oldP = $('old-password').value;
+  const newP = $('new-password').value;
+  const confP = $('confirm-password').value;
+  if (newP !== confP) return showMsg('password-message', 'New passwords do not match');
+  try {
+    const r = await fetch('/api/password', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ current: oldP, next: newP })
+    });
+    if (!r.ok) throw new Error((await r.json()).error || 'Update failed');
+    showMsg('password-message', 'Password updated.', true);
+    $('password-form').reset();
+    toast('Password changed', 'success');
+  } catch (e) { showMsg('password-message', e.message); }
+});
+
+// init — load default section
+loadProjects();
