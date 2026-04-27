@@ -28,5 +28,5 @@
     { "name": "Visual Identity", "level": 85, "rank": "S" },
     { "name": "Motion Design",   "level": 70, "rank": "B" }
   ],
-  "photos": { "hero": null, "about": null, "brand": null }
+  "photos": { "hero": "uploads/surya-hero.jpg", "about": "uploads/surya-hero.jpg", "brand": "uploads/surya-hero.jpg" }
 }
