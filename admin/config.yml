@@ -1,0 +1,95 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "uploads"
+public_folder: "/uploads"
+
+site_url: https://example.netlify.app
+display_url: https://example.netlify.app
+logo_url: ""
+
+collections:
+  - name: "site"
+    label: "Site & Profile"
+    delete: false
+    files:
+      - file: "data/site.json"
+        name: "settings"
+        label: "Site Settings"
+        format: "json"
+        fields:
+          - label: "Profile"
+            name: "profile"
+            widget: "object"
+            fields:
+              - { label: "Full name", name: "name", widget: "string" }
+              - { label: "Title / role", name: "title", widget: "string", required: false }
+              - { label: "Year", name: "year", widget: "string", required: false }
+              - { label: "College", name: "college", widget: "string", required: false }
+              - { label: "Tagline", name: "tagline", widget: "text", required: false }
+              - { label: "Bio (formal)", name: "bio", widget: "text", required: false }
+              - { label: "Personal touch", name: "personalTouch", widget: "text", required: false }
+              - { label: "Goals", name: "goals", widget: "text", required: false }
+          - label: "Contact / Socials"
+            name: "contact"
+            widget: "object"
+            fields:
+              - { label: "Email", name: "email", widget: "string", required: false }
+              - { label: "Instagram (handle, no @)", name: "instagram", widget: "string", required: false }
+              - { label: "Twitter (handle, no @)", name: "twitter", widget: "string", required: false }
+              - { label: "LinkedIn URL", name: "linkedin", widget: "string", required: false }
+          - label: "Subjects (Semester I)"
+            name: "subjects"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Code", name: "code", widget: "string", required: false }
+              - { label: "Subject name", name: "name", widget: "string" }
+              - { label: "Faculty", name: "faculty", widget: "string", required: false }
+          - label: "Skills"
+            name: "skills"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Skill name", name: "name", widget: "string" }
+              - { label: "Level (0-100)", name: "level", widget: "number", value_type: "int", min: 0, max: 100, default: 70 }
+              - { label: "Rank (S / A / B / C)", name: "rank", widget: "string", required: false }
+          - label: "Photos"
+            name: "photos"
+            widget: "object"
+            fields:
+              - { label: "Hero portrait (right of home page)", name: "hero", widget: "image", required: false }
+              - { label: "About photo", name: "about", widget: "image", required: false }
+              - { label: "Brand mark (small circle in nav)", name: "brand", widget: "image", required: false }
+
+  - name: "projects"
+    label: "Projects"
+    delete: false
+    files:
+      - file: "data/projects.json"
+        name: "list"
+        label: "Project list"
+        format: "json"
+        fields:
+          - label: "Projects"
+            name: "items"
+            widget: "list"
+            required: false
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "ID (used in URL — no spaces)", name: "id", widget: "string", hint: "e.g. bloomroom-magazine — must be unique" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Teacher / Mentor", name: "teacher", widget: "string", required: false }
+              - { label: "Category", name: "category", widget: "string", required: false }
+              - { label: "Year", name: "year", widget: "string", required: false }
+              - { label: "Tags", name: "tags", widget: "list", required: false, default: [] }
+              - { label: "External link", name: "link", widget: "string", required: false }
+              - { label: "Accent color (hex)", name: "color", widget: "string", required: false, default: "#7c3aed" }
+              - label: "Photos (multiple — first is the cover)"
+                name: "images"
+                widget: "list"
+                required: false
+                field: { label: "Image", name: "image", widget: "image" }
+              - { label: "Created at (timestamp, leave 0 to auto)", name: "createdAt", widget: "number", value_type: "int", default: 0, required: false }

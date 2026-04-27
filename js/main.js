@@ -147,7 +147,8 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadProjects() {
     try {
       const r = await fetch('data/projects.json');
-      const projects = await r.json();
+      const _d = await r.json();
+      const projects = Array.isArray(_d) ? _d : (_d.items || []);
       const grid = $('projects-grid');
       const empty = $('no-projects');
       if (!projects.length) { grid.style.display = 'none'; empty.style.display = ''; return; }
