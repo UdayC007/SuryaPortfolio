@@ -10,8 +10,9 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 const ROOT = __dirname;
-const DATA_DIR = path.join(ROOT, 'data');
-const UPLOAD_DIR = path.join(ROOT, 'uploads');
+const STORAGE_DIR = process.env.STORAGE_DIR || ROOT;
+const DATA_DIR = process.env.DATA_DIR || path.join(STORAGE_DIR, 'data');
+const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(STORAGE_DIR, 'uploads');
 const PROJECTS_FILE = path.join(DATA_DIR, 'projects.json');
 const CONFIG_FILE = path.join(DATA_DIR, 'config.json');
 
