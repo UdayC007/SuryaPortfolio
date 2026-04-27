@@ -8,6 +8,8 @@ const nav = document.querySelector('.nav');
 window.addEventListener('scroll', () => nav && nav.classList.toggle('scrolled', window.scrollY > 50));
 
 function projectId() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('id')) return params.get('id');
   const parts = window.location.pathname.split('/').filter(Boolean);
   return parts[parts.length - 1];
 }
@@ -21,7 +23,7 @@ function gallerySize(i, total) {
 
 async function loadSite() {
   try {
-    const r = await fetch('/api/site');
+    const r = await fetch('data/site.json');
     const s = await r.json();
     const p = s.profile || {};
     const initial = (p.name || 'S').charAt(0).toUpperCase();
@@ -37,9 +39,11 @@ async function loadSite() {
 async function loadProject() {
   const root = $('project-root');
   try {
-    const r = await fetch('/api/projects/' + encodeURIComponent(projectId()));
-    if (!r.ok) throw new Error('Quest not found');
-    const p = await r.json();
+    const r = await fetch('data/projects.json');
+    if (!r.ok) throw new Error('Could not load projects');
+    const list = await r.json();
+    const p = list.find(x => x.id === projectId());
+    if (!p) throw new Error('Quest not found');
     document.title = p.title + ' — Surya Portfolio';
 
     const all = p.images || [];
@@ -82,11 +86,11 @@ async function loadProject() {
         </div>` : ''}
 
       <div style="text-align:center;margin-top:30px">
-        <a href="/#projects" class="btn-ghost-s">← MORE QUESTS</a>
+        <a href="index.html#projects" class="btn-ghost-s">← MORE QUESTS</a>
       </div>
     `;
   } catch (e) {
-    root.innerHTML = `<div class="sys-window"><div class="sys-bar"><span class="sys-bar-dot"></span><span class="sys-bar-title">SYSTEM</span><span class="sys-bar-x">—</span></div><div class="sys-body" style="text-align:center;padding:50px"><p class="sys-msg">${esc(e.message)}</p><p class="sys-msg-sub">This quest may have been removed. <a href="/" style="color:var(--purple-bright)">Return home →</a></p></div></div>`;
+    root.innerHTML = `<div class="sys-window"><div class="sys-bar"><span class="sys-bar-dot"></span><span class="sys-bar-title">SYSTEM</span><span class="sys-bar-x">—</span></div><div class="sys-body" style="text-align:center;padding:50px"><p class="sys-msg">${esc(e.message)}</p><p class="sys-msg-sub">This quest may have been removed. <a href="index.html" style="color:var(--purple-bright)">Return home →</a></p></div></div>`;
   }
 }
 

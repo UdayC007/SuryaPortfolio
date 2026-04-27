@@ -1,0 +1,35 @@
+{
+  "profile": {
+    "name": "Surya Pundir",
+    "title": "S-Rank UI/UX Designer",
+    "year": "1st Year",
+    "college": "DIT University, Dehradun",
+    "tagline": "Designing with the precision of a Shadow Monarch.",
+    "bio": "A first-year design student exploring the line between system and story. Every interface is a dungeon — every dungeon a chance to level up.",
+    "personalTouch": "Off-screen I sketch monsters in the margins of my notebooks, replay Solo Leveling for the third time, and chase good chai across Dehradun.",
+    "goals": "Become a designer who builds calm, systemic interfaces; ship a shipped product before the end of first year; mentor a junior by the time I graduate."
+  },
+  "contact": {
+    "email": "suryapundir326@gmail.com",
+    "instagram": "thakur_surya_pundir",
+    "twitter": "ThakurSurya",
+    "linkedin": ""
+  },
+  "subjects": [
+    { "code": "CSE101", "name": "Programming Fundamentals", "faculty": "" },
+    { "code": "MAT101", "name": "Engineering Mathematics I", "faculty": "" },
+    { "code": "PHY101", "name": "Engineering Physics", "faculty": "" },
+    { "code": "ENG101", "name": "Communication Skills", "faculty": "" },
+    { "code": "ELC101", "name": "Basic Electronics", "faculty": "" },
+    { "code": "WSP101", "name": "Workshop Practice", "faculty": "" }
+  ],
+  "skills": [
+    { "name": "UI Design",       "level": 92, "rank": "S" },
+    { "name": "UX Research",     "level": 80, "rank": "A" },
+    { "name": "Prototyping",     "level": 88, "rank": "S" },
+    { "name": "Design Systems",  "level": 78, "rank": "A" },
+    { "name": "Visual Identity", "level": 85, "rank": "S" },
+    { "name": "Motion Design",   "level": 70, "rank": "B" }
+  ],
+  "photos": { "hero": null, "about": null, "brand": null }
+}

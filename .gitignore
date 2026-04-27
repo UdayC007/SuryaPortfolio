@@ -1,7 +1,4 @@
 node_modules/
-uploads/
-data/config.json
-data/projects.json
 *.log
 .env
 .DS_Store

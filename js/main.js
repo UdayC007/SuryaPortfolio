@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function loadSite() {
     try {
-      const r = await fetch('/api/site');
+      const r = await fetch('data/site.json');
       const s = await r.json();
       const p = s.profile || {};
       const c = s.contact || {};
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function loadProjects() {
     try {
-      const r = await fetch('/api/projects');
+      const r = await fetch('data/projects.json');
       const projects = await r.json();
       const grid = $('projects-grid');
       const empty = $('no-projects');
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const photos = (p.images || []).length;
         const photosBadge = photos > 1 ? `<span class="project-tag">${photos} photos</span>` : '';
         return `
-          <a class="project-card reveal" href="/project/${p.id}">
+          <a class="project-card reveal" href="project.html?id=${p.id}">
             <div class="project-thumb">${thumb}</div>
             <div class="project-body">
               <div class="project-tags">${tags}${photosBadge}</div>

@@ -1,0 +1,7 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/project/:id"
+  to = "/project.html?id=:id"
+  status = 200
