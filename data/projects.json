@@ -1,1 +1,65 @@
-{"items":[]}
+{
+  "items": [
+    {
+      "id": "p4-wave-painting",
+      "title": "Wave — A Texture Study",
+      "description": "An impasto study of a single curling wave, painted with thick palette-knife strokes against a soft sky-blue gradient. The piece is about feeling the *weight* of a moment of water before it falls — built up in layers so that the paint itself ridges and breaks like spray.",
+      "teacher": "Aaditya Raj Sharma",
+      "category": "Typography",
+      "year": "2025",
+      "tags": ["Painting", "Texture", "Impasto"],
+      "link": "",
+      "color": "#3aa6c9",
+      "images": [
+        "uploads/surya-p4-wave-painting.jpg"
+      ],
+      "createdAt": 1745738000000
+    },
+    {
+      "id": "p3-elements-of-design",
+      "title": "Design Matrix — Elements × Principles",
+      "description": "A wall-sized matrix mapping the seven *elements* of design (Line, Shape, Form, Color, Volume, Texture, Space) against the seven *principles* (Balance, Movement, Repetition, Contrast, Emphasis, Proportion, Unity) — and filling each cell with a real-world brand mark that demonstrates that combination. Hand-drawn, hand-painted, hand-cut. A small atlas of how visual language actually works in the world.",
+      "teacher": "",
+      "category": "Elements of Design",
+      "year": "2025",
+      "tags": ["Foundation", "Design Theory", "Branding", "Logos"],
+      "link": "",
+      "color": "#7c3aed",
+      "images": [
+        "uploads/surya-p3-design-matrix.jpg"
+      ],
+      "createdAt": 1745735000000
+    },
+    {
+      "id": "p2-dyslexia-typeface",
+      "title": "Dyslexia-Friendly Typeface — Research & Letterforms",
+      "description": "A research-led typography brief: how do you design a typeface that is genuinely easier to read for someone with dyslexia? The poster opens with a short brief on dyslexia (a neurological learning difficulty that affects reading, spelling and decoding), benchmarks existing solutions, and lays out the project's own design principles — heavily weighted bottoms, asymmetrical letterforms, wider letter-and-word spacing, slab-serif style.\n\nThe lower half is the typeface itself: a complete a–z, each letter drawn on its own paper coin so it can be moved, compared and rearranged.",
+      "teacher": "Aaditya Raj Sharma",
+      "category": "Typography",
+      "year": "2025",
+      "tags": ["Typography", "Accessibility", "Type Design", "Research"],
+      "link": "",
+      "color": "#ff6b4a",
+      "images": [
+        "uploads/surya-p2-dyslexia-typeface.jpg"
+      ],
+      "createdAt": 1745731000000
+    },
+    {
+      "id": "p1-form-exploration",
+      "title": "Form Exploration — Cube to Sphere",
+      "description": "A two-part 3D form study in carved foam.\n\n**Series 1:** a transformation sequence — eight blocks lined up showing the gradual carving of a cube into a sphere. Each step shaves away one more set of edges; the in-between forms (rounded cube, cushion, lozenge, ovoid) are each a study on their own.\n\n**Series 2:** form-to-object — the same vocabulary applied to make recognisable things. A candy-cane J, an L-bracket, a cylinder bottle, a doorknob, a lightbulb. A study in how much identity an object loses, or keeps, when you reduce it to pure volume.",
+      "teacher": "Anugraha",
+      "category": "Form Exploration",
+      "year": "2025",
+      "tags": ["3D", "Form", "Foam", "Sculpture", "Foundation"],
+      "link": "",
+      "color": "#cccccc",
+      "images": [
+        "uploads/surya-p1-form-progression.jpg",
+        "uploads/surya-p1-form-objects.jpg"
+      ],
+      "createdAt": 1745724000000
+    }
+  ]
+}

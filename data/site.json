@@ -16,12 +16,9 @@
     "linkedin": ""
   },
   "subjects": [
-    { "code": "CSE101", "name": "Programming Fundamentals", "faculty": "" },
-    { "code": "MAT101", "name": "Engineering Mathematics I", "faculty": "" },
-    { "code": "PHY101", "name": "Engineering Physics", "faculty": "" },
-    { "code": "ENG101", "name": "Communication Skills", "faculty": "" },
-    { "code": "ELC101", "name": "Basic Electronics", "faculty": "" },
-    { "code": "WSP101", "name": "Workshop Practice", "faculty": "" }
+    { "code": "", "name": "Form Exploration", "faculty": "Anugraha" },
+    { "code": "", "name": "Typography", "faculty": "Aaditya Raj Sharma" },
+    { "code": "", "name": "Elements of Design", "faculty": "" }
   ],
   "skills": [
     { "name": "UI Design",       "level": 92, "rank": "S" },
